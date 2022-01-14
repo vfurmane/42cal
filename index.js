@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv').config();
 const ical = require('ical-generator');
 const { ClientCredentials } = require('simple-oauth2');
+const axios = require('axios');
 const app = express();
 
 app.use(express.json());
@@ -28,7 +29,7 @@ const tokenParams = {
 
 async function checkToken(req, res, next) {
 	if (!access_token) {
-		res.redirect('/auth');
+		return res.redirect('/auth');
 	}
 	else if (access_token.expired()) {
 		try {
@@ -48,14 +49,14 @@ const calendar = ical({name: '42 Events'});
 //     description: 'First day of 2022',
 // });
 
+app.set('view engine', 'ejs');
 // app.get('/', (req, res) => calendar.serve(res));
 app.get('/', (req, res) => {
   res.send('Hello<br><a href="/auth">Log in</a>');
 });
 
-
 app.get('/auth', (req, res) => {
-	res.redirect(`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=${callback_url}&response_type=code`);
+	res.redirect(`https://api.intra.42.fr/oauth/authorize?client_id=${config.client.id}&redirect_uri=${callback_url}&response_type=code`);
 });
 
 app.get('/callback', async (req, res) => {
@@ -69,7 +70,19 @@ app.get('/callback', async (req, res) => {
 });
 
 app.get('/api', checkToken, (req, res) => {
-	res.send('api here');
+	axios({
+		method: 'GET',
+		url: 'https://api.intra.42.fr/v2/campus/1/events',
+		headers: {
+			'Authorization': `Bearer ${access_token.token.access_token}`
+		}
+	})
+	.then((result) => {
+		res.render('events', { events: result.data });
+	})
+	.catch((error) => {
+		res.send(error);
+	});
 });
 
 app.listen(3000, () => {

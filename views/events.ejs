@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Events at 42</title>
+</head>
+<body>
+	<h1>Events at 42</h1>
+	<% for (const event of events) { %>
+	<h2><%= event.name %> - <%= event.begin_at %> to <%= event.end_at %></h2>
+	<h3><%= event.location %></h3>
+	<p><%= event.description %></p>
+	<% } %>
+</body>
+</html>
