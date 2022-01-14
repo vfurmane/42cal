@@ -12,8 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^11.0.0",
     "express": "^4.17.2",
     "ical-generator": "^3.2.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "simple-oauth2": "^4.3.0"
   }
 }
