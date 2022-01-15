@@ -42,12 +42,38 @@ async function checkToken(req, res, next) {
 	next();
 }
 
+async function initCalendar(calendar) {
+	try {
+		const { token } = await client.getToken(tokenParams);
+		access_token = client.createToken(token);
+	} catch (error) {
+		console.error(error);
+	}
+	
+	axios({
+		method: 'GET',
+		url: 'https://api.intra.42.fr/v2/campus/1/events',
+		headers: {
+			'Authorization': `Bearer ${access_token.token.access_token}`
+		}
+	})
+	.then((result) => {
+		for (const event of result.data) {
+			calendar.createEvent({
+			    start: new Date(event.begin_at),
+			    end: new Date(event.end_at),
+			    summary: event.name,
+			    description: event.description,
+			    location: event.location
+			});
+		}
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+}
+
 const calendar = ical({name: '42 Events'});
-// calendar.createEvent({
-//     start: '2021-01-01',
-//     summary: 'New Year',
-//     description: 'First day of 2022',
-// });
 
 app.set('view engine', 'ejs');
 // app.get('/', (req, res) => calendar.serve(res));
@@ -70,21 +96,12 @@ app.get('/callback', async (req, res) => {
 });
 
 app.get('/api', checkToken, (req, res) => {
-	axios({
-		method: 'GET',
-		url: 'https://api.intra.42.fr/v2/campus/1/events',
-		headers: {
-			'Authorization': `Bearer ${access_token.token.access_token}`
-		}
-	})
-	.then((result) => {
-		res.render('events', { events: result.data });
-	})
-	.catch((error) => {
-		res.send(error);
-	});
+//	res.render('events', { events: result.data });
+	calendar.serve(res);
 });
 
 app.listen(3000, () => {
 	console.log('Running on http://localhost:3000');
 });
+
+initCalendar(calendar);
