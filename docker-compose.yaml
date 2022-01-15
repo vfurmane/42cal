@@ -1,13 +1,13 @@
 version: "3.2"
 services:
   app:
-    image: node:16.13.2-alpine3.14
-    command: "npm start"
+    build: .
     restart: unless-stopped
-    working_dir: /usr/src
-    environment:
-      - NODE_ENV=production
-    volumes:
-      - ./:/usr/src
+    command: "npm start"
+    networks:
+      - backend
     ports:
       - 3000:3000
+
+networks:
+  backend:
