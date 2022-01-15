@@ -1,7 +1,6 @@
 const axios = require('axios');
 
-async function fetchEvents(calendar, client) {
-	console.log('fetching events...');
+async function fetchEvents(calendar, client, campus_id) {
 	let access_token;
 	try {
 		const { token } = await client.getToken({
@@ -10,19 +9,20 @@ async function fetchEvents(calendar, client) {
 		access_token = client.createToken(token);
 	} catch (error) {
 		console.error(error);
-		return;
+		return Promise.reject(error);
 	}
-	initCalendar(calendar, access_token.token.access_token);
+	return (axios({
+		method: 'GET',
+		url: `https://api.intra.42.fr/v2/campus/${campus_id}/events`,
+		headers: {
+			'Authorization': `Bearer ${access_token.token.access_token}`
+		}
+	}));
 }
 
-async function initCalendar(calendar, access_token) {
-	axios({
-		method: 'GET',
-		url: 'https://api.intra.42.fr/v2/campus/1/events',
-		headers: {
-			'Authorization': `Bearer ${access_token}`
-		}
-	})
+function getCampusCalendar(client, calendar, campus) {
+	console.log(`Fetching events of the ${campus.name} campus...`);
+	fetchEvents(calendar, client, campus.id)
 	.then((result) => {
 		calendar.clear();
 		for (const event of result.data) {
@@ -34,10 +34,12 @@ async function initCalendar(calendar, access_token) {
 			    location: event.location
 			});
 		}
+		return result;
 	})
 	.catch((error) => {
-		console.error(error);
+		console.error(error.response.data);
+		return error;
 	});
 }
 
-module.exports = { fetchEvents };
+module.exports = { getCampusCalendar };
