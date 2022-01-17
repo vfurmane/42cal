@@ -4,10 +4,5 @@ services:
     build: .
     restart: unless-stopped
     command: "npm start"
-    networks:
-      - backend
     ports:
       - 3000:3000
-
-networks:
-  backend:
