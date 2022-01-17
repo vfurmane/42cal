@@ -15,9 +15,10 @@ CLIENT_SECRET=
 
 And fill it with the client credentials.
 
-Then, start the server:
+Then, install the packages and start the server:
 
 ```sh
+npm install
 npm start
 ```
 
