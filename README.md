@@ -35,3 +35,7 @@ const campuses = [
     { "id": 1, "name": "Paris" }
 ];
 ```
+
+## License
+
+Licensed under MIT License, Copyright 2022 Valentin Furmanek.
