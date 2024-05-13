@@ -1,11 +1,21 @@
 import { InternalServerErrorException } from '@nestjs/common';
+import { ZodType } from 'zod';
 
-export async function getDataFromResponseOrThrow(rawResponse: Response | Promise<Response>) {
+export async function getDataFromResponseOrThrow<T>(
+  rawResponse: Response | Promise<Response>,
+  schema: { response: ZodType<T> },
+): Promise<T> {
   const response = await rawResponse;
 
   if (!response.ok) {
-    throw new InternalServerErrorException('An error occurred while fetching 42 events');
+    throw new InternalServerErrorException(FT_API_REGULAR_ERROR_MESSAGE);
   }
 
-  return response.json();
+  const unverifiedJson = await response.json();
+
+  try {
+    return schema.response.parse(unverifiedJson);
+  } catch {
+    throw new InternalServerErrorException(FT_API_REGULAR_ERROR_MESSAGE);
+  }
 }
