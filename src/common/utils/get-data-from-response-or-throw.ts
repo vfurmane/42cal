@@ -1,5 +1,6 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { ZodType } from 'zod';
+import { FT_API_REGULAR_ERROR_MESSAGE } from '../constants/error-messages';
 
 export async function getDataFromResponseOrThrow<T>(
   rawResponse: Response | Promise<Response>,
