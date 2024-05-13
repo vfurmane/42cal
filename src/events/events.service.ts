@@ -1,4 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class EventsService {}
+export class EventsService {
+  async findAll() {
+    return [];
+  }
+}
