@@ -41,6 +41,12 @@ export class FtApiService {
     });
   }
 
+  async findAllEvents() {
+    return getDataFromResponseOrThrow(this.fetchApi(`v2/events`), {
+      response: findEventsResponseSchema,
+    });
+  }
+
   async findAllEventsByCampusId(campusId: number) {
     return getDataFromResponseOrThrow(this.fetchApi(`v2/campus/${campusId}/events`), {
       response: findEventsResponseSchema,

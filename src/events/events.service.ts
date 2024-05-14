@@ -15,6 +15,10 @@ export class EventsService {
   }
 
   async findAll() {
+    return this.ftApiService.findAllEvents();
+  }
+
+  async findAllFromDefaultCampus() {
     return this.ftApiService.findAllEventsByCampusId(this.defaultCampusId);
   }
 }
