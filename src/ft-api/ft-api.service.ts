@@ -31,14 +31,18 @@ export class FtApiService {
     }
   }
 
-  private async fetchApi(route: string, init?: RequestInit) {
+  private async fetchWithAccessToken(route: string, init?: RequestInit) {
     const { tokenType, accessToken } = await this.getAccessToken();
-    return fetch(`${this.apiBaseUrl}/${route}`, {
+    return fetch(route, {
       headers: { Authorization: `${tokenType} ${accessToken}`, ...init?.headers },
       ...init,
     }).then((res) => {
       return res;
     });
+  }
+
+  private async fetchApi(route: string, init?: RequestInit) {
+    return this.fetchWithAccessToken(`${this.apiBaseUrl}/${route}`, init);
   }
 
   async findAllEvents() {
