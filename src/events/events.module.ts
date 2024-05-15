@@ -9,5 +9,6 @@ import { CacheModule } from '@nestjs/cache-manager';
   imports: [CacheModule.register(), ConfigModule, FtApiModule],
   controllers: [EventsController],
   providers: [EventsService],
+  exports: [EventsService],
 })
 export class EventsModule {}
