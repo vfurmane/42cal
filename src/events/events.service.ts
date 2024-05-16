@@ -9,6 +9,9 @@ import {
 } from '../common/constants/ft-api-cache';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { FindAllEventsDto } from './dto/find-all-events.dto';
+import { FindEventsResponseDto } from '../ft-api/dto/find-events-response.dto';
+import { filterEventsByCampusIds } from '../common/utils/filter-events-by-campus-ids';
 
 @Injectable()
 export class EventsService {
@@ -27,8 +30,11 @@ export class EventsService {
     await this.cacheManager.set(FT_CACHED_EVENTS_CACHE_KEY, events, FT_CACHED_EVENTS_TTL);
   }
 
-  async findAll() {
-    return (await this.cacheManager.get(FT_CACHED_EVENTS_CACHE_KEY)) ?? FT_DEFAULT_EVENTS_LIST;
+  async findAll({ campusIds }: FindAllEventsDto) {
+    return filterEventsByCampusIds(
+      (await this.cacheManager.get<FindEventsResponseDto>(FT_CACHED_EVENTS_CACHE_KEY)) ?? FT_DEFAULT_EVENTS_LIST,
+      campusIds,
+    );
   }
 
   async findAllFromDefaultCampus() {

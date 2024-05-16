@@ -23,6 +23,8 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/schedule": "^4.0.2",
     "cache-manager": "^5.5.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "ical-generator": "^7.1.0",
     "parse-link-header": "^2.0.0",
     "reflect-metadata": "^0.2.0",

@@ -1,2 +1,8 @@
 ### GET all events
 {{base_url}}/events
+
+### GET all events from Paris campus
+{{base_url}}/events?campusIds=1
+
+### GET all events from Paris and Málaga campuses
+{{base_url}}/events?campusIds=1,37
