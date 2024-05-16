@@ -22,8 +22,8 @@ export class EventsService {
     this.defaultCampusId = this.configService.getOrThrow(FT_DEFAULT_CAMPUS_ID);
   }
 
-  async prefetchAllEvents() {
-    const events = await this.ftApiService.findAllEvents();
+  async prefetchAllFutureEvents() {
+    const events = await this.ftApiService.findAllFutureEvents();
     await this.cacheManager.set(FT_CACHED_EVENTS_CACHE_KEY, events, FT_CACHED_EVENTS_TTL);
   }
 

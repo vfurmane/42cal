@@ -105,7 +105,7 @@ export class FtApiService {
     return result;
   }
 
-  async findAllEvents() {
+  async findAllFutureEvents() {
     return this.fetchApiAllPages('v2/events?filter[future]=true', { schema: { response: findEventsResponseSchema } });
   }
 
