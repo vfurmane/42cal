@@ -1,7 +1,11 @@
-import { IsNumberString, IsOptional } from 'class-validator';
+import { IsArray, IsNumber, IsOptional } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 
 export class FindAllEventsDto {
   @IsOptional()
-  @IsNumberString({}, { each: true })
+  @Type(() => String)
+  @IsArray()
+  @IsNumber({}, { each: true })
+  @Transform(({ value }: { value: string }) => value.split(',').map((v) => parseInt(v)))
   campusIds?: Array<number>;
 }

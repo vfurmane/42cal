@@ -1,4 +1,4 @@
-import { Controller, Get, ParseArrayPipe, Query, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Query, UseInterceptors } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { EventsToIcsInterceptor } from '../events-to-ics/events-to-ics.interceptor';
 import { CALENDAR_NAME_ALL_EVENTS } from '../common/constants/calendars-name';
@@ -10,9 +10,7 @@ export class EventsController {
 
   @Get()
   @UseInterceptors(new EventsToIcsInterceptor({ name: CALENDAR_NAME_ALL_EVENTS }))
-  findAll(
-    @Query('campusIds', new ParseArrayPipe({ items: Number, separator: ',' })) campusIds: FindAllEventsDto['campusIds'],
-  ) {
+  findAll(@Query() { campusIds }: FindAllEventsDto) {
     return this.eventsService.findAll({ campusIds });
   }
 }
