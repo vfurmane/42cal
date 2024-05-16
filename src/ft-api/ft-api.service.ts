@@ -28,6 +28,8 @@ export class FtApiService {
   private readonly apiPaginationSearchParamKey: string;
   private readonly apiPaginationFirstPageNumber: number;
 
+  private apiFetchLock: Promise<void>;
+
   constructor(
     private readonly configService: ConfigService,
     @Inject(SIMPLE_CLIENT_CREDENTIALS_PROVIDER) private readonly simpleClientCredentials: ClientCredentials,
@@ -38,6 +40,18 @@ export class FtApiService {
     this.apiRateLimitWait = this.configService.getOrThrow(FT_API_CONFIG_RATE_LIMIT_WAIT);
     this.apiPaginationSearchParamKey = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_SEARCH_PARAM_KEY);
     this.apiPaginationFirstPageNumber = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_FIRST_PAGE_NUMBER);
+
+    this.apiFetchLock = Promise.resolve();
+  }
+
+  private async waitForApiLock() {
+    return this.apiFetchLock;
+  }
+
+  private lockApiTask() {
+    this.apiFetchLock = new Promise<void>((resolve) => {
+      setTimeout(resolve, this.apiRateLimitWait);
+    });
   }
 
   private generateFirstRouteForPaginatedResource(route: string) {
@@ -55,7 +69,9 @@ export class FtApiService {
   }
 
   private async fetchWithAccessToken(route: string, init?: RequestInit) {
+    await this.waitForApiLock();
     const { tokenType, accessToken } = await this.getAccessToken();
+    this.lockApiTask();
     return fetch(route, {
       headers: { Authorization: `${tokenType} ${accessToken}`, ...init?.headers },
       ...init,
@@ -72,24 +88,20 @@ export class FtApiService {
     baseRoute: string,
     init: RequestInit & { schema: FetchSchemas<Array<T>> },
   ): Promise<Array<T>> {
-    const firstRoute = this.generateFirstRouteForPaginatedResource(`${this.apiBaseUrl}/${baseRoute}`);
-    const [result] = await doWithRateLimitWhile<[Array<T>, string | null]>(
-      async (result, route) => {
-        if (route === null) {
-          return [result, route];
-        }
-        const { data, nextLink } = await getDataAndNextLinkFromResponseOrThrow(
-          this.fetchWithAccessToken(route, init),
-          init.schema,
-          this.apiLinkHeaderKey,
-        );
-        return [result.concat(data), nextLink];
-      },
-      (result, nextRoute) => nextRoute !== null,
-      this.apiRateLimitWait,
-      [],
-      firstRoute,
-    );
+    let result: Array<T> = [];
+    let route: string | null = this.generateFirstRouteForPaginatedResource(`${this.apiBaseUrl}/${baseRoute}`);
+    do {
+      const { data, nextLink } = await getDataAndNextLinkFromResponseOrThrow(
+        this.fetchWithAccessToken(route, init),
+        init.schema,
+        this.apiLinkHeaderKey,
+      );
+      result = result.concat(data);
+      if (route === null) {
+        break;
+      }
+      route = nextLink;
+    } while (route !== null);
     return result;
   }
 
