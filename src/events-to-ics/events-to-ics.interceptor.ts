@@ -1,9 +1,9 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { map, Observable, tap } from 'rxjs';
 import { ICalCalendarData } from 'ical-generator';
-import { FindEventsResponseDto } from '../ft-api/dto/find-events-response.dto';
-import { createIcalFromEvents } from '../common/utils/create-ical-from-events';
-import { setResponseContentType } from '../common/utils/set-response-content-type';
+import { FindEventsResponseDto } from '../ft-api/dto/find-events-response.dto.js';
+import { createIcalFromEvents } from '../common/utils/create-ical-from-events.js';
+import { setResponseContentType } from '../common/utils/set-response-content-type.js';
 
 @Injectable()
 export class EventsToIcsInterceptor implements NestInterceptor {

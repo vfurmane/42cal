@@ -1,5 +1,5 @@
-import { FindEventsResponseDto } from '../../ft-api/dto/find-events-response.dto';
-import { FindAllEventsDto } from '../../events/dto/find-all-events.dto';
+import { FindEventsResponseDto } from '../../ft-api/dto/find-events-response.dto.js';
+import { FindAllEventsDto } from '../../events/dto/find-all-events.dto.js';
 
 export function filterEventsByCampusIds(events: FindEventsResponseDto, campusIds: FindAllEventsDto['campusIds']) {
   if (campusIds === undefined) {

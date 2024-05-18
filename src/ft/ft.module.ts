@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { FtService } from './ft.service';
-import { FtApiModule } from '../ft-api/ft-api.module';
+import { FtService } from './ft.service.js';
+import { FtApiModule } from '../ft-api/ft-api.module.js';
 
 @Module({
   imports: [FtApiModule],

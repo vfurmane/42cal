@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { findEventsResponseSchema } from '../ft-api/dto/find-events-response.dto';
-import { getDataFromResponseOrThrow } from '../common/utils/get-data-from-response-or-throw';
-import { FtApiService } from '../ft-api/ft-api.service';
+import { findEventsResponseSchema } from '../ft-api/dto/find-events-response.dto.js';
+import { getDataFromResponseOrThrow } from '../common/utils/get-data-from-response-or-throw.js';
+import { FtApiService } from '../ft-api/ft-api.service.js';
 
 @Injectable()
 export class FtService {

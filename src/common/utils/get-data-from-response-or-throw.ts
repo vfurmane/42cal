@@ -1,7 +1,7 @@
 import { ZodType } from 'zod';
-import { FT_API_REGULAR_ERROR_MESSAGE } from '../constants/error-messages';
-import { getJsonDataOrThrow } from './get-json-data-or-throw';
-import { throwOnErrorResponse } from './throw-on-error-response';
+import { FT_API_REGULAR_ERROR_MESSAGE } from '../constants/error-messages.js';
+import { getJsonDataOrThrow } from './get-json-data-or-throw.js';
+import { throwOnErrorResponse } from './throw-on-error-response.js';
 
 export async function getDataFromResponseOrThrow<T>(
   rawResponse: Response | Promise<Response>,

@@ -1,8 +1,8 @@
 import { Controller, Get, Query, UseInterceptors } from '@nestjs/common';
-import { EventsService } from './events.service';
-import { EventsToIcsInterceptor } from '../events-to-ics/events-to-ics.interceptor';
-import { CALENDAR_NAME_ALL_EVENTS } from '../common/constants/calendars-name';
-import { FindAllEventsDto } from './dto/find-all-events.dto';
+import { EventsService } from './events.service.js';
+import { EventsToIcsInterceptor } from '../events-to-ics/events-to-ics.interceptor.js';
+import { CALENDAR_NAME_ALL_EVENTS } from '../common/constants/calendars-name.js';
+import { FindAllEventsDto } from './dto/find-all-events.dto.js';
 
 @Controller('events')
 export class EventsController {

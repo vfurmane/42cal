@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
-import { EventsService } from '../events/events.service';
-import { FT_EVENTS_CACHE_REVALIDATION_INTERVAL } from '../common/constants/ft-api-cache';
+import { EventsService } from '../events/events.service.js';
+import { FT_EVENTS_CACHE_REVALIDATION_INTERVAL } from '../common/constants/ft-api-cache.js';
 
 @Injectable()
 export class TasksService {

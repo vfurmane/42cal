@@ -1,17 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { FtService } from '../ft/ft.service';
+import { FtService } from '../ft/ft.service.js';
 import { ConfigService } from '@nestjs/config';
-import { FT_DEFAULT_CAMPUS_ID } from '../common/constants/ft-api-config';
+import { FT_DEFAULT_CAMPUS_ID } from '../common/constants/ft-api-config.js';
 import {
   FT_CACHED_EVENTS_CACHE_KEY,
   FT_CACHED_EVENTS_TTL,
   FT_DEFAULT_EVENTS_LIST,
-} from '../common/constants/ft-api-cache';
+} from '../common/constants/ft-api-cache.js';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { FindAllEventsDto } from './dto/find-all-events.dto';
-import { FindEventsResponseDto } from '../ft-api/dto/find-events-response.dto';
-import { filterEventsByCampusIds } from '../common/utils/filter-events-by-campus-ids';
+import { FindAllEventsDto } from './dto/find-all-events.dto.js';
+import { FindEventsResponseDto } from '../ft-api/dto/find-events-response.dto.js';
+import { filterEventsByCampusIds } from '../common/utils/filter-events-by-campus-ids.js';
 
 @Injectable()
 export class EventsService {

@@ -1,6 +1,6 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { clientCredentialsAuthSchema } from './dto/client-credentials-auth.dto';
-import { FT_API_REGULAR_ERROR_MESSAGE } from '../common/constants/error-messages';
+import { clientCredentialsAuthSchema } from './dto/client-credentials-auth.dto.js';
+import { FT_API_REGULAR_ERROR_MESSAGE } from '../common/constants/error-messages.js';
 import {
   FT_API_CONFIG_BASE_URL,
   FT_API_CONFIG_DEFAULT_SCOPE,
@@ -8,13 +8,13 @@ import {
   FT_API_CONFIG_PAGINATION_SEARCH_PARAM_KEY,
   FT_API_CONFIG_PAGINATION_FIRST_PAGE_NUMBER,
   FT_API_CONFIG_PAGINATION_LINKS_HEADER,
-} from '../common/constants/ft-api-config';
+} from '../common/constants/ft-api-config.js';
 import { ConfigService } from '@nestjs/config';
-import { SIMPLE_CLIENT_CREDENTIALS_PROVIDER } from '../simple-client-credentials/simple-client-credentials.module';
+import { SIMPLE_CLIENT_CREDENTIALS_PROVIDER } from '../simple-client-credentials/simple-client-credentials.module.js';
 import { ClientCredentials } from 'simple-oauth2';
-import { setPageInRoute } from '../common/utils/set-page-in-route';
-import { getDataAndNextLinkFromResponseOrThrow } from '../common/utils/get-data-and-next-link-from-response-or-throw';
-import { FetchSchemas } from '../common/utils/get-json-data-or-throw';
+import { setPageInRoute } from '../common/utils/set-page-in-route.js';
+import { getDataAndNextLinkFromResponseOrThrow } from '../common/utils/get-data-and-next-link-from-response-or-throw.js';
+import { FetchSchemas } from '../common/utils/get-json-data-or-throw.js';
 
 @Injectable()
 export class FtApiService {

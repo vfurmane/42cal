@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { EventsService } from './events.service';
-import { EventsController } from './events.controller';
-import { FtModule } from '../ft/ft.module';
+import { EventsService } from './events.service.js';
+import { EventsController } from './events.controller.js';
+import { FtModule } from '../ft/ft.module.js';
 import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 
