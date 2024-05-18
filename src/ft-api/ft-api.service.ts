@@ -1,5 +1,4 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { getDataFromResponseOrThrow } from '../common/utils/get-data-from-response-or-throw';
 import { clientCredentialsAuthSchema } from './dto/client-credentials-auth.dto';
 import { FT_API_REGULAR_ERROR_MESSAGE } from '../common/constants/error-messages';
 import {
@@ -11,7 +10,6 @@ import {
   FT_API_CONFIG_PAGINATION_LINKS_HEADER,
 } from '../common/constants/ft-api-config';
 import { ConfigService } from '@nestjs/config';
-import { findEventsResponseSchema } from './dto/find-events-response.dto';
 import { SIMPLE_CLIENT_CREDENTIALS_PROVIDER } from '../simple-client-credentials/simple-client-credentials.module';
 import { ClientCredentials } from 'simple-oauth2';
 import { setPageInRoute } from '../common/utils/set-page-in-route';
@@ -79,11 +77,11 @@ export class FtApiService {
     });
   }
 
-  private async fetchApi(route: string, init?: RequestInit) {
+  async fetchApi(route: string, init?: RequestInit) {
     return this.fetchWithAccessToken(`${this.apiBaseUrl}/${route}`, init);
   }
 
-  private async fetchApiAllPages<T>(
+  async fetchApiAllPages<T>(
     baseRoute: string,
     init: RequestInit & { schema: FetchSchemas<Array<T>> },
   ): Promise<Array<T>> {
@@ -102,15 +100,5 @@ export class FtApiService {
       route = nextLink;
     } while (route !== null);
     return result;
-  }
-
-  async findAllFutureEvents() {
-    return this.fetchApiAllPages('v2/events?filter[future]=true', { schema: { response: findEventsResponseSchema } });
-  }
-
-  async findAllEventsByCampusId(campusId: number) {
-    return getDataFromResponseOrThrow(this.fetchApi(`v2/campus/${campusId}/events`), {
-      response: findEventsResponseSchema,
-    });
   }
 }

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { FtApiService } from '../ft-api/ft-api.service';
+import { FtService } from '../ft/ft.service';
 import { ConfigService } from '@nestjs/config';
 import { FT_DEFAULT_CAMPUS_ID } from '../common/constants/ft-api-config';
 import {
@@ -20,13 +20,13 @@ export class EventsService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly configService: ConfigService,
-    private readonly ftApiService: FtApiService,
+    private readonly ftService: FtService,
   ) {
     this.defaultCampusId = this.configService.getOrThrow(FT_DEFAULT_CAMPUS_ID);
   }
 
   async prefetchAllFutureEvents() {
-    const events = await this.ftApiService.findAllFutureEvents();
+    const events = await this.ftService.findAllFutureEvents();
     await this.cacheManager.set(FT_CACHED_EVENTS_CACHE_KEY, events, FT_CACHED_EVENTS_TTL);
   }
 
@@ -38,6 +38,6 @@ export class EventsService {
   }
 
   async findAllFromDefaultCampus() {
-    return this.ftApiService.findAllEventsByCampusId(this.defaultCampusId);
+    return this.ftService.findAllEventsByCampusId(this.defaultCampusId);
   }
 }

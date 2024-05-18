@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ftApiConfig } from './common/config/ft-api';
 import { TasksModule } from './tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { FtModule } from './ft/ft.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     }),
     ScheduleModule.forRoot(),
     TasksModule,
+    FtModule,
   ],
   controllers: [AppController],
   providers: [AppService],
