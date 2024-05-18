@@ -94,9 +94,6 @@ export class FtApiService {
         this.apiLinkHeaderKey,
       );
       result = result.concat(data);
-      if (route === null) {
-        break;
-      }
       route = nextLink;
     } while (route !== null);
     return result;
