@@ -7,10 +7,14 @@ import {
   FT_API_CONFIG_CLIENT_ID,
   FT_API_CONFIG_CLIENT_SECRET,
 } from '../common/constants/ft-api-config.js';
+import { FtSecondlyRateLimitModule } from '../ft-secondly-rate-limit/ft-secondly-rate-limit.module.js';
+import { FtHourlyRateLimitModule } from '../ft-hourly-rate-limit/ft-hourly-rate-limit.module.js';
 
 @Module({
   imports: [
     ConfigModule,
+    FtSecondlyRateLimitModule,
+    FtHourlyRateLimitModule,
     SimpleClientCredentialsModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
