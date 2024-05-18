@@ -15,7 +15,6 @@ import { findEventsResponseSchema } from './dto/find-events-response.dto';
 import { SIMPLE_CLIENT_CREDENTIALS_PROVIDER } from '../simple-client-credentials/simple-client-credentials.module';
 import { ClientCredentials } from 'simple-oauth2';
 import { setPageInRoute } from '../common/utils/set-page-in-route';
-import { doWithRateLimitWhile } from '../common/utils/do-with-rate-limit-while';
 import { getDataAndNextLinkFromResponseOrThrow } from '../common/utils/get-data-and-next-link-from-response-or-throw';
 import { FetchSchemas } from '../common/utils/get-json-data-or-throw';
 
