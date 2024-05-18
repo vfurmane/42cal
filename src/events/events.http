@@ -6,3 +6,6 @@
 
 ### GET all events from Paris and Málaga campuses
 {{base_url}}/events?campusIds=1,37
+
+### GET all events from Paris campus & C-piscine and 42 cursus
+{{base_url}}/events?campusIds=1&cursusIds=9,21
