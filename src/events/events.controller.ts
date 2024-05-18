@@ -10,7 +10,7 @@ export class EventsController {
 
   @Get()
   @UseInterceptors(new EventsToIcsInterceptor({ name: CALENDAR_NAME_ALL_EVENTS }))
-  findAll(@Query() { campusIds }: FindAllEventsDto) {
-    return this.eventsService.findAll({ campusIds });
+  findAll(@Query() query: FindAllEventsDto) {
+    return this.eventsService.findAll(query);
   }
 }

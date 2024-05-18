@@ -4,6 +4,7 @@ export const findEventsResponseSchema = z.array(
   z.object({
     name: z.string(),
     campus_ids: z.array(z.number()),
+    cursus_ids: z.array(z.number()),
     description: z.string(),
     location: z.string(),
     begin_at: z.string(),
