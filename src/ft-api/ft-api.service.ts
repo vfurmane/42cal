@@ -4,7 +4,6 @@ import { FT_API_REGULAR_ERROR_MESSAGE } from '../common/constants/error-messages
 import {
   FT_API_CONFIG_BASE_URL,
   FT_API_CONFIG_DEFAULT_SCOPE,
-  FT_API_CONFIG_RATE_LIMIT_WAIT,
   FT_API_CONFIG_PAGINATION_SEARCH_PARAM_KEY,
   FT_API_CONFIG_PAGINATION_FIRST_PAGE_NUMBER,
   FT_API_CONFIG_PAGINATION_LINKS_HEADER,
@@ -15,40 +14,28 @@ import { ClientCredentials } from 'simple-oauth2';
 import { setPageInRoute } from '../common/utils/set-page-in-route.js';
 import { getDataAndNextLinkFromResponseOrThrow } from '../common/utils/get-data-and-next-link-from-response-or-throw.js';
 import { FetchSchemas } from '../common/utils/get-json-data-or-throw.js';
+import { FtSecondlyRateLimitService } from '../ft-secondly-rate-limit/ft-secondly-rate-limit.service.js';
+import { FtHourlyRateLimitService } from '../ft-hourly-rate-limit/ft-hourly-rate-limit.service.js';
 
 @Injectable()
 export class FtApiService {
   private readonly apiBaseUrl: string;
   private readonly apiDefaultScope: string;
   private readonly apiLinkHeaderKey: string;
-  private readonly apiRateLimitWait: number;
   private readonly apiPaginationSearchParamKey: string;
   private readonly apiPaginationFirstPageNumber: number;
 
-  private apiFetchLock: Promise<void>;
-
   constructor(
     private readonly configService: ConfigService,
+    private readonly sQueue: FtSecondlyRateLimitService,
+    private readonly hQueue: FtHourlyRateLimitService,
     @Inject(SIMPLE_CLIENT_CREDENTIALS_PROVIDER) private readonly simpleClientCredentials: ClientCredentials,
   ) {
     this.apiBaseUrl = this.configService.getOrThrow(FT_API_CONFIG_BASE_URL);
     this.apiDefaultScope = this.configService.getOrThrow(FT_API_CONFIG_DEFAULT_SCOPE);
     this.apiLinkHeaderKey = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_LINKS_HEADER);
-    this.apiRateLimitWait = this.configService.getOrThrow(FT_API_CONFIG_RATE_LIMIT_WAIT);
     this.apiPaginationSearchParamKey = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_SEARCH_PARAM_KEY);
     this.apiPaginationFirstPageNumber = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_FIRST_PAGE_NUMBER);
-
-    this.apiFetchLock = Promise.resolve();
-  }
-
-  private async waitForApiLock() {
-    return this.apiFetchLock;
-  }
-
-  private lockApiTask() {
-    this.apiFetchLock = new Promise<void>((resolve) => {
-      setTimeout(resolve, this.apiRateLimitWait);
-    });
   }
 
   private generateFirstRouteForPaginatedResource(route: string) {
@@ -65,15 +52,25 @@ export class FtApiService {
     }
   }
 
+  private async fetchWithRateLimiting(route: string, init?: RequestInit): Promise<Response> {
+    const response = await this.hQueue.add(() =>
+      this.sQueue.add(async () => {
+        return fetch(route, init).then((res) => {
+          return res;
+        });
+      }),
+    );
+    if (response === undefined) {
+      throw new InternalServerErrorException(FT_API_REGULAR_ERROR_MESSAGE);
+    }
+    return response;
+  }
+
   private async fetchWithAccessToken(route: string, init?: RequestInit) {
-    await this.waitForApiLock();
     const { tokenType, accessToken } = await this.getAccessToken();
-    this.lockApiTask();
-    return fetch(route, {
+    return this.fetchWithRateLimiting(route, {
       headers: { Authorization: `${tokenType} ${accessToken}`, ...init?.headers },
       ...init,
-    }).then((res) => {
-      return res;
     });
   }
 

@@ -8,7 +8,6 @@ export const ftApiConfig = () => ({
         link_header: 'Link',
         search_param_key: 'page',
       },
-      rate_limit_wait: 500,
       secondly_interval: 1000,
       requests_per_second: 2,
       hourly_interval: 1000 * 60 * 60,
