@@ -16,6 +16,9 @@ import { getDataAndNextLinkFromResponseOrThrow } from '../common/utils/get-data-
 import { FetchSchemas } from '../common/utils/get-json-data-or-throw.js';
 import { FtSecondlyRateLimitService } from '../ft-secondly-rate-limit/ft-secondly-rate-limit.service.js';
 import { FtHourlyRateLimitService } from '../ft-hourly-rate-limit/ft-hourly-rate-limit.service.js';
+import { getDataFromResponseOrThrow } from '../common/utils/get-data-from-response-or-throw.js';
+
+export type RequestWithSchemas<T> = RequestInit & { schema: FetchSchemas<Array<T>> };
 
 @Injectable()
 export class FtApiService {
@@ -74,14 +77,11 @@ export class FtApiService {
     });
   }
 
-  async fetchApi(route: string, init?: RequestInit) {
-    return this.fetchWithAccessToken(`${this.apiBaseUrl}/${route}`, init);
+  async fetchApi<T>(route: string, init: RequestWithSchemas<T>) {
+    return getDataFromResponseOrThrow(this.fetchWithAccessToken(`${this.apiBaseUrl}/${route}`, init), init.schema);
   }
 
-  async fetchApiAllPages<T>(
-    baseRoute: string,
-    init: RequestInit & { schema: FetchSchemas<Array<T>> },
-  ): Promise<Array<T>> {
+  async fetchApiAllPages<T>(baseRoute: string, init: RequestWithSchemas<T>): Promise<Array<T>> {
     let result: Array<T> = [];
     let route: string | null = this.generateFirstRouteForPaginatedResource(`${this.apiBaseUrl}/${baseRoute}`);
     do {
