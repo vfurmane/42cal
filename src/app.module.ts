@@ -11,6 +11,7 @@ import { FtModule } from './ft/ft.module.js';
 import { PQueueModule } from './p-queue/p-queue.module.js';
 import { FtHourlyRateLimitModule } from './ft-hourly-rate-limit/ft-hourly-rate-limit.module.js';
 import { FtSecondlyRateLimitModule } from './ft-secondly-rate-limit/ft-secondly-rate-limit.module.js';
+import { AuthModule } from './auth/auth.module.js';
 import { UsersModule } from './users/users.module.js';
 
 @Module({
@@ -26,6 +27,7 @@ import { UsersModule } from './users/users.module.js';
     PQueueModule,
     FtHourlyRateLimitModule,
     FtSecondlyRateLimitModule,
+    AuthModule,
     UsersModule,
   ],
   controllers: [AppController],
