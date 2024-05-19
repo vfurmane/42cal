@@ -1,11 +1,11 @@
 ### GET all events
-{{base_url}}/events
+{{base_url}}/events?basic={{basic_auth_token}}
 
 ### GET all events from Paris campus
-{{base_url}}/events?campusIds=1
+{{base_url}}/events?campusIds=1&basic={{basic_auth_token}}
 
 ### GET all events from Paris and Málaga campuses
-{{base_url}}/events?campusIds=1,37
+{{base_url}}/events?campusIds=1,37&basic={{basic_auth_token}}
 
 ### GET all events from Paris campus & C-piscine and 42 cursus
-{{base_url}}/events?campusIds=1&cursusIds=9,21
+{{base_url}}/events?campusIds=1&cursusIds=9,21&basic={{basic_auth_token}}
