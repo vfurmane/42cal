@@ -1,6 +1,10 @@
 ### GET all events
 {{base_url}}/events?basic={{basic_auth_token}}
 
+### GET all events using Authorization header
+{{base_url}}/events
+Authorization: Basic {{basic_auth_token}}
+
 ### GET all events from Paris campus
 {{base_url}}/events?campusIds=1&basic={{basic_auth_token}}
 
