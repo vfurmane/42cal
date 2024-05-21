@@ -38,4 +38,4 @@ jobs:
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ vars.SCW_DEFAULT_PROJECT_ID }}
           default-organization-id: ${{ vars.SCW_DEFAULT_ORGANIZATION_ID }}
-          args: container container update ${{ env.CONTAINER_ID }} registry-image=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
+          args: container container update ${{ env.CONTAINER_ID }} registry-image=${{ steps.meta.outputs.tags }}
