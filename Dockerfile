@@ -41,4 +41,4 @@ COPY --chown=node:node --from=build /app/node_modules node_modules
 
 USER node
 
-CMD ["pnpm", "run", "start:prod"]
+CMD ["npm", "run", "start:prod"]
