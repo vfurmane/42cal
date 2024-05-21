@@ -5,6 +5,7 @@ WORKDIR /app
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 RUN corepack enable
 
 FROM base as dev
