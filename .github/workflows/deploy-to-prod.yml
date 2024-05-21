@@ -3,7 +3,7 @@ name: Deploy current version to Scaleway Serverless Container
 on: workflow_dispatch
 
 env:
-  CONTAINER_ID: ${{ env.SCW_CONTAINER_ID }}
+  CONTAINER_ID: ${{ vars.SCW_CONTAINER_ID }}
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -18,10 +18,10 @@ jobs:
         uses: scaleway/action-scw@v0
         id: container
         with:
-          access-key: ${{ env.SCW_ACCESS_KEY }}
+          access-key: ${{ vars.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
-          default-project-id: ${{ env.SCW_DEFAULT_PROJECT_ID }}
-          default-organization-id: ${{ env.SCW_DEFAULT_ORGANIZATION_ID }}
+          default-project-id: ${{ vars.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ vars.SCW_DEFAULT_ORGANIZATION_ID }}
           args: instance server get ${{ env.CONTAINER_ID }}
       - name: Get Docker metadata
         id: meta
@@ -34,8 +34,8 @@ jobs:
       - name: Update the container with current tag
         uses: scaleway/action-scw@v0
         with:
-          access-key: ${{ env.SCW_ACCESS_KEY }}
+          access-key: ${{ vars.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
-          default-project-id: ${{ env.SCW_DEFAULT_PROJECT_ID }}
-          default-organization-id: ${{ env.SCW_DEFAULT_ORGANIZATION_ID }}
+          default-project-id: ${{ vars.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ vars.SCW_DEFAULT_ORGANIZATION_ID }}
           args: container container update ${{ env.CONTAINER_ID }} registry-image=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
