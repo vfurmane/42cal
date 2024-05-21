@@ -22,7 +22,7 @@ jobs:
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ vars.SCW_DEFAULT_PROJECT_ID }}
           default-organization-id: ${{ vars.SCW_DEFAULT_ORGANIZATION_ID }}
-          args: instance server get ${{ env.CONTAINER_ID }}
+          args: container container get ${{ env.CONTAINER_ID }}
       - name: Get Docker metadata
         id: meta
         uses: docker/metadata-action@v5
