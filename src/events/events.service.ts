@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { FtService } from '../ft/ft.service.js';
 import { ConfigService } from '@nestjs/config';
 import { FT_DEFAULT_CAMPUS_ID } from '../common/constants/ft-api-config.js';
@@ -17,6 +17,8 @@ import { byCursusIds } from '../common/utils/filter-events/by-cursus-ids.js';
 
 @Injectable()
 export class EventsService {
+  private readonly logger = new Logger(EventsService.name);
+
   private readonly defaultCampusId: number;
 
   constructor(
@@ -27,9 +29,18 @@ export class EventsService {
     this.defaultCampusId = this.configService.getOrThrow(FT_DEFAULT_CAMPUS_ID);
   }
 
+  async setCache(events: FindEventsResponseDto) {
+    this.logger.verbose('Setting events cache');
+
+    return Promise.all([
+      this.cacheManager.set(FT_CACHED_EVENTS_CACHE_KEY, events, FT_CACHED_EVENTS_TTL),
+    ]);
+  }
+
   async prefetchAllFutureEvents() {
     const events = await this.ftService.findAllFutureEvents();
-    await this.cacheManager.set(FT_CACHED_EVENTS_CACHE_KEY, events, FT_CACHED_EVENTS_TTL);
+    await this.setCache(events);
+  }
   }
 
   async findAll({ campusIds, cursusIds }: FindAllEventsDto) {
