@@ -19,6 +19,11 @@ import { FtHourlyRateLimitService } from '../ft-hourly-rate-limit/ft-hourly-rate
 import { getDataFromResponseOrThrow } from '../common/utils/get-data-from-response-or-throw.js';
 
 export type RequestWithSchemas<T> = RequestInit & { schema: FetchSchemas<Array<T>> };
+export type FetchUntilFunctionItems<T> = {
+  iteration: number;
+  lastItem?: T;
+};
+export type FetchUntilFunction<T> = (items: FetchUntilFunctionItems<T>) => boolean;
 
 @Injectable()
 export class FtApiService {
@@ -81,7 +86,12 @@ export class FtApiService {
     return getDataFromResponseOrThrow(this.fetchWithAccessToken(`${this.apiBaseUrl}/${route}`, init), init.schema);
   }
 
-  async fetchApiAllPages<T>(baseRoute: string, init: RequestWithSchemas<T>): Promise<Array<T>> {
+  async fetchApiAllPages<T>(
+    baseRoute: string,
+    init: RequestWithSchemas<T>,
+    untilFn?: FetchUntilFunction<T>,
+  ): Promise<Array<T>> {
+    let iteration = 0;
     let result: Array<T> = [];
     let route: string | null = this.generateFirstRouteForPaginatedResource(`${this.apiBaseUrl}/${baseRoute}`);
     do {
@@ -90,9 +100,13 @@ export class FtApiService {
         init.schema,
         this.apiLinkHeaderKey,
       );
+      ++iteration;
       result = result.concat(data);
       route = nextLink;
-    } while (route !== null);
+    } while (
+      route !== null &&
+      (untilFn === undefined || !untilFn({ iteration, lastItem: result[result.length - 1] }))
+    );
     return result;
   }
 }
