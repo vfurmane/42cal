@@ -1,4 +1,4 @@
-import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { clientCredentialsAuthSchema } from './dto/client-credentials-auth.dto.js';
 import { FT_API_REGULAR_ERROR_MESSAGE } from '../common/constants/error-messages.js';
 import {
@@ -30,6 +30,8 @@ export type FetchUntilFunction<T> = (items: FetchUntilFunctionItems<T>) => boole
 
 @Injectable()
 export class FtApiService {
+  private readonly logger = new Logger(FtApiService.name);
+
   private readonly apiBaseUrl: string;
   private readonly apiDefaultScope: string;
   private readonly apiLinkHeaderKey: string;
@@ -107,6 +109,7 @@ export class FtApiService {
     let route: string | null = this.generateFirstRouteForPaginatedResource(`${this.apiBaseUrl}/${baseRoute}`);
     do {
       route = setPageNumberInRoute(route, this.apiPaginationSizeSearchParamKey, this.apiPaginationSize);
+      this.logger.verbose(`Fetching route '${route}' (iteration is ${iteration})`);
       const { data, nextLink } = await getDataAndNextLinkFromResponseOrThrow(
         this.fetchWithAccessToken(route, init),
         init.schema,
