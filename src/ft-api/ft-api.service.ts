@@ -33,6 +33,7 @@ export class FtApiService {
   private readonly apiBaseUrl: string;
   private readonly apiDefaultScope: string;
   private readonly apiLinkHeaderKey: string;
+  private readonly apiPaginationMaxDepth: number;
   private readonly apiPaginationSearchParamKey: string;
   private readonly apiPaginationFirstPageNumber: number;
   private readonly apiPaginationSizeSearchParamKey: string;
@@ -47,6 +48,7 @@ export class FtApiService {
     this.apiBaseUrl = this.configService.getOrThrow(FT_API_CONFIG_BASE_URL);
     this.apiDefaultScope = this.configService.getOrThrow(FT_API_CONFIG_DEFAULT_SCOPE);
     this.apiLinkHeaderKey = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_LINKS_HEADER);
+    this.apiPaginationMaxDepth = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_MAX_DEPTH);
     this.apiPaginationSearchParamKey = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_SEARCH_PARAM_KEY);
     this.apiPaginationFirstPageNumber = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_FIRST_PAGE_NUMBER);
     this.apiPaginationSizeSearchParamKey = this.configService.getOrThrow(
@@ -115,6 +117,7 @@ export class FtApiService {
       route = nextLink;
     } while (
       route !== null &&
+      iteration < this.apiPaginationMaxDepth &&
       (untilFn === undefined || !untilFn({ iteration, lastItem: result[result.length - 1] }))
     );
     return result;

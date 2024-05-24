@@ -9,6 +9,7 @@ export const ftApiConfig = () => ({
         search_param_key: 'page',
         size: 100,
         size_search_param_key: 'per_page',
+        max_depth: 40,
       },
       secondly_interval: 1000,
       requests_per_second: 2,

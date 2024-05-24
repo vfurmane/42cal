@@ -2,6 +2,7 @@ export const FT_API_CONFIG_BASE_URL = 'ft.api.base_url';
 export const FT_API_CONFIG_DEFAULT_SCOPE = 'ft.api.default_scope';
 export const FT_API_CONFIG_CLIENT_ID = 'FT_API_CLIENT_ID';
 export const FT_API_CONFIG_CLIENT_SECRET = 'FT_API_CLIENT_SECRET';
+export const FT_API_CONFIG_PAGINATION_MAX_DEPTH = 'ft.api.pagination.max_depth';
 export const FT_API_CONFIG_PAGINATION_SEARCH_PARAM_KEY = 'ft.api.pagination.search_param_key';
 export const FT_API_CONFIG_PAGINATION_FIRST_PAGE_NUMBER = 'ft.api.pagination.first_page_number';
 export const FT_API_CONFIG_PAGINATION_SIZE_SEARCH_PARAM_KEY = 'ft.api.pagination.size_search_param_key';
