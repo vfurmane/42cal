@@ -15,6 +15,7 @@ import { FindEventsResponseDto } from '../ft-api/dto/find-events-response.dto.js
 import { filterEvents } from '../common/utils/filter-events/filter-events.js';
 import { byCampusIds } from '../common/utils/filter-events/by-campus-ids.js';
 import { byCursusIds } from '../common/utils/filter-events/by-cursus-ids.js';
+import { FetchUntilFunction } from '../ft-api/ft-api.service.js';
 
 @Injectable()
 export class EventsService {
@@ -43,6 +44,10 @@ export class EventsService {
     const events = await this.ftService.findAllFutureEvents();
     await this.setCache(events);
   }
+
+  async prefetchAllEvents(untilFn?: FetchUntilFunction<FindEventsResponseDto[number]>) {
+    const events = await this.ftService.findAllEvents(untilFn);
+    await this.setCache(events);
   }
 
   async findAll({ campusIds, cursusIds }: FindAllEventsDto) {
@@ -50,6 +55,10 @@ export class EventsService {
       (await this.cacheManager.get<FindEventsResponseDto>(FT_CACHED_EVENTS_CACHE_KEY)) ?? FT_DEFAULT_EVENTS_LIST,
       [byCampusIds(campusIds), byCursusIds(cursusIds)],
     );
+  }
+
+  async findLatestEvent() {
+    return (await this.cacheManager.get<FindEventsResponseDto[number]>(FT_CACHED_LATEST_EVENT_CACHE_KEY)) ?? null;
   }
 
   async findAllFromDefaultCampus() {
