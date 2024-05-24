@@ -5,6 +5,7 @@ import { FT_DEFAULT_CAMPUS_ID } from '../common/constants/ft-api-config.js';
 import {
   FT_CACHED_EVENTS_CACHE_KEY,
   FT_CACHED_EVENTS_TTL,
+  FT_CACHED_LATEST_EVENT_CACHE_KEY,
   FT_DEFAULT_EVENTS_LIST,
 } from '../common/constants/ft-api-cache.js';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
@@ -34,6 +35,7 @@ export class EventsService {
 
     return Promise.all([
       this.cacheManager.set(FT_CACHED_EVENTS_CACHE_KEY, events, FT_CACHED_EVENTS_TTL),
+      this.cacheManager.set(FT_CACHED_LATEST_EVENT_CACHE_KEY, events[0], FT_CACHED_EVENTS_TTL),
     ]);
   }
 
