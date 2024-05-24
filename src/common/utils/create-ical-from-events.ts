@@ -1,6 +1,6 @@
 import ical, { ICalCalendarData } from 'ical-generator';
 import { FindEventsResponseDto } from '../../ft-api/dto/find-events-response.dto.js';
-import { CALENDARS_PRODID } from '../constants/calendars-name.js';
+import { CALENDARS_PRODID } from '../constants/calendars.js';
 
 export function createIcalFromEvents(config: ICalCalendarData) {
   return (events: FindEventsResponseDto) => {

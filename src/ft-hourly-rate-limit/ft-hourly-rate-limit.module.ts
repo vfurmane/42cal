@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PQueueModule } from '../p-queue/p-queue.module.js';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { FT_API_CONFIG_HOURLY_INTERVAL, FT_API_CONFIG_REQUESTS_PER_HOUR } from '../common/constants/ft-api-config.js';
+import { FT_API_CONFIG_HOURLY_INTERVAL, FT_API_CONFIG_REQUESTS_PER_HOUR } from '../common/constants/config/ft-api.js';
 import { FtHourlyRateLimitService } from './ft-hourly-rate-limit.service.js';
 import PQueue from 'p-queue';
 

@@ -1,5 +1,5 @@
 import { ZodType } from 'zod';
-import { FT_API_REGULAR_ERROR_MESSAGE } from '../constants/error-messages.js';
+import { FT_API_REGULAR_ERROR_MESSAGE } from '../constants/errors/ft-api.js';
 import { getJsonDataOrThrow } from './get-json-data-or-throw.js';
 import { throwOnErrorResponse } from './throw-on-error-response.js';
 

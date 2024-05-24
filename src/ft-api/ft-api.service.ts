@@ -1,6 +1,6 @@
 import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { clientCredentialsAuthSchema } from './dto/client-credentials-auth.dto.js';
-import { FT_API_REGULAR_ERROR_MESSAGE } from '../common/constants/error-messages.js';
+import { FT_API_REGULAR_ERROR_MESSAGE } from '../common/constants/errors/ft-api.js';
 import {
   FT_API_CONFIG_BASE_URL,
   FT_API_CONFIG_DEFAULT_SCOPE,
@@ -10,7 +10,7 @@ import {
   FT_API_CONFIG_PAGINATION_MAX_DEPTH,
   FT_API_CONFIG_PAGINATION_SIZE,
   FT_API_CONFIG_PAGINATION_SIZE_SEARCH_PARAM_KEY,
-} from '../common/constants/ft-api-config.js';
+} from '../common/constants/config/ft-api.js';
 import { ConfigService } from '@nestjs/config';
 import { SIMPLE_CLIENT_CREDENTIALS_PROVIDER } from '../simple-client-credentials/simple-client-credentials.module.js';
 import { ClientCredentials } from 'simple-oauth2';

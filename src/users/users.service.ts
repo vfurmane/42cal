@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AUTH_BASIC_PASSWORD, AUTH_BASIC_USERNAME } from '../common/constants/auth-config.js';
+import { AUTH_BASIC_PASSWORD, AUTH_BASIC_USERNAME } from '../common/constants/config/auth.js';
 
 @Injectable()
 export class UsersService {

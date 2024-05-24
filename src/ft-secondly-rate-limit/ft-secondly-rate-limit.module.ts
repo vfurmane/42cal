@@ -5,7 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import {
   FT_API_CONFIG_REQUESTS_PER_SECOND,
   FT_API_CONFIG_SECONDLY_INTERVAL,
-} from '../common/constants/ft-api-config.js';
+} from '../common/constants/config/ft-api.js';
 import PQueue from 'p-queue';
 
 @Module({

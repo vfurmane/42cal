@@ -1,13 +1,13 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { FtService } from '../ft/ft.service.js';
 import { ConfigService } from '@nestjs/config';
-import { FT_DEFAULT_CAMPUS_ID } from '../common/constants/ft-api-config.js';
+import { FT_DEFAULT_CAMPUS_ID } from '../common/constants/config/ft-api.js';
 import {
   FT_CACHED_EVENTS_CACHE_KEY,
   FT_CACHED_EVENTS_TTL,
   FT_CACHED_LATEST_EVENT_CACHE_KEY,
   FT_DEFAULT_EVENTS_LIST,
-} from '../common/constants/ft-api-cache.js';
+} from '../common/constants/cache/ft-api.js';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { FindAllEventsDto } from './dto/find-all-events.dto.js';
