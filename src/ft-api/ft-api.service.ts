@@ -7,11 +7,14 @@ import {
   FT_API_CONFIG_PAGINATION_SEARCH_PARAM_KEY,
   FT_API_CONFIG_PAGINATION_FIRST_PAGE_NUMBER,
   FT_API_CONFIG_PAGINATION_LINKS_HEADER,
+  FT_API_CONFIG_PAGINATION_MAX_DEPTH,
+  FT_API_CONFIG_PAGINATION_SIZE,
+  FT_API_CONFIG_PAGINATION_SIZE_SEARCH_PARAM_KEY,
 } from '../common/constants/ft-api-config.js';
 import { ConfigService } from '@nestjs/config';
 import { SIMPLE_CLIENT_CREDENTIALS_PROVIDER } from '../simple-client-credentials/simple-client-credentials.module.js';
 import { ClientCredentials } from 'simple-oauth2';
-import { setPageInRoute } from '../common/utils/set-page-in-route.js';
+import { setPageInRoute, setPageNumberInRoute } from '../common/utils/set-page-in-route.js';
 import { getDataAndNextLinkFromResponseOrThrow } from '../common/utils/get-data-and-next-link-from-response-or-throw.js';
 import { FetchSchemas } from '../common/utils/get-json-data-or-throw.js';
 import { FtSecondlyRateLimitService } from '../ft-secondly-rate-limit/ft-secondly-rate-limit.service.js';
@@ -32,6 +35,8 @@ export class FtApiService {
   private readonly apiLinkHeaderKey: string;
   private readonly apiPaginationSearchParamKey: string;
   private readonly apiPaginationFirstPageNumber: number;
+  private readonly apiPaginationSizeSearchParamKey: string;
+  private readonly apiPaginationSize: number;
 
   constructor(
     private readonly configService: ConfigService,
@@ -44,6 +49,10 @@ export class FtApiService {
     this.apiLinkHeaderKey = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_LINKS_HEADER);
     this.apiPaginationSearchParamKey = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_SEARCH_PARAM_KEY);
     this.apiPaginationFirstPageNumber = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_FIRST_PAGE_NUMBER);
+    this.apiPaginationSizeSearchParamKey = this.configService.getOrThrow(
+      FT_API_CONFIG_PAGINATION_SIZE_SEARCH_PARAM_KEY,
+    );
+    this.apiPaginationSize = this.configService.getOrThrow(FT_API_CONFIG_PAGINATION_SIZE);
   }
 
   private generateFirstRouteForPaginatedResource(route: string) {
@@ -95,6 +104,7 @@ export class FtApiService {
     let result: Array<T> = [];
     let route: string | null = this.generateFirstRouteForPaginatedResource(`${this.apiBaseUrl}/${baseRoute}`);
     do {
+      route = setPageNumberInRoute(route, this.apiPaginationSizeSearchParamKey, this.apiPaginationSize);
       const { data, nextLink } = await getDataAndNextLinkFromResponseOrThrow(
         this.fetchWithAccessToken(route, init),
         init.schema,

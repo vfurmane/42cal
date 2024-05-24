@@ -7,6 +7,8 @@ export const ftApiConfig = () => ({
         first_page_number: 1,
         link_header: 'Link',
         search_param_key: 'page',
+        size: 100,
+        size_search_param_key: 'per_page',
       },
       secondly_interval: 1000,
       requests_per_second: 2,
