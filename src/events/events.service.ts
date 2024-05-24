@@ -45,11 +45,6 @@ export class EventsService {
     await this.setCache(events);
   }
 
-  async prefetchAllEvents(untilFn?: FetchUntilFunction<FindEventsResponseDto[number]>) {
-    const events = await this.ftService.findAllEvents(untilFn);
-    await this.setCache(events);
-  }
-
   async findAll({ campusIds, cursusIds }: FindAllEventsDto) {
     return filterEvents(
       (await this.cacheManager.get<FindEventsResponseDto>(FT_CACHED_EVENTS_CACHE_KEY)) ?? FT_DEFAULT_EVENTS_LIST,
