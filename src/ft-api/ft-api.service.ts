@@ -24,7 +24,7 @@ import { getDataFromResponseOrThrow } from '../common/utils/get-data-from-respon
 export type RequestWithSchemas<T> = RequestInit & { schema: FetchSchemas<Array<T>> };
 export type FetchUntilFunctionItems<T> = {
   iteration: number;
-  lastItem?: T;
+  result: Array<T>;
 };
 export type FetchUntilFunction<T> = (items: FetchUntilFunctionItems<T>) => boolean;
 
@@ -121,7 +121,7 @@ export class FtApiService {
     } while (
       route !== null &&
       iteration < this.apiPaginationMaxDepth &&
-      (untilFn === undefined || !untilFn({ iteration, lastItem: result[result.length - 1] }))
+      (untilFn === undefined || !untilFn({ iteration, result }))
     );
     return result;
   }
