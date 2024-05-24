@@ -15,7 +15,6 @@ import { FindEventsResponseDto } from '../ft-api/dto/find-events-response.dto.js
 import { filterEvents } from '../common/utils/filter-events/filter-events.js';
 import { byCampusIds } from '../common/utils/filter-events/by-campus-ids.js';
 import { byCursusIds } from '../common/utils/filter-events/by-cursus-ids.js';
-import { FetchUntilFunction } from '../ft-api/ft-api.service.js';
 
 @Injectable()
 export class EventsService {
