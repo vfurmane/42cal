@@ -12,7 +12,6 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { FindAllEventsDto } from './dto/find-all-events.dto.js';
 import { FindEventsResponseDto } from '../ft-api/dto/find-events-response.dto.js';
-import { filterEvents } from '../common/utils/filter-events/filter-events.js';
 import { byCampusIds } from '../common/utils/filter-events/by-campus-ids.js';
 import { byCursusIds } from '../common/utils/filter-events/by-cursus-ids.js';
 
@@ -21,6 +20,12 @@ export class EventsService {
   private readonly logger = new Logger(EventsService.name);
 
   private readonly defaultCampusId: number;
+
+  static pipeFilters(events: FindEventsResponseDto, filters: Array<(event: FindEventsResponseDto[number]) => boolean>) {
+    return events.filter((event) => {
+      return filters.every((filter) => filter(event));
+    });
+  }
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -45,7 +50,7 @@ export class EventsService {
   }
 
   async findAll({ campusIds, cursusIds }: FindAllEventsDto) {
-    return filterEvents(
+    return EventsService.pipeFilters(
       (await this.cacheManager.get<FindEventsResponseDto>(FT_CACHED_EVENTS_CACHE_KEY)) ?? FT_DEFAULT_EVENTS_LIST,
       [byCampusIds(campusIds), byCursusIds(cursusIds)],
     );
