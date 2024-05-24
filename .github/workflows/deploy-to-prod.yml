@@ -6,6 +6,7 @@ env:
   CONTAINER_ID: ${{ vars.SCW_CONTAINER_ID }}
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  CONTAINER_HTTP_OPTION: redirected
 
 jobs:
   deploy-to-prod:
@@ -38,4 +39,7 @@ jobs:
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ vars.SCW_DEFAULT_PROJECT_ID }}
           default-organization-id: ${{ vars.SCW_DEFAULT_ORGANIZATION_ID }}
-          args: container container update ${{ env.CONTAINER_ID }} registry-image=${{ steps.meta.outputs.tags }}
+          args: >-
+            container container update ${{ env.CONTAINER_ID }}
+              registry-image=${{ steps.meta.outputs.tags }}
+              --http-option=${{ env.CONTAINER_HTTP_OPTION }}
