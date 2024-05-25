@@ -17,6 +17,8 @@ GET /events?campusIds=1,37&cursusIds=9,21
 > [!NOTE]
 > All query filters are optional.
 
+You can find more information on the [Swagger UI page](https://42cal.valfur.fr/swagger).
+
 ## Installation
 
 ### Configuration
