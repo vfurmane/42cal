@@ -1,3 +1,5 @@
+![GitHub package.json version](https://img.shields.io/github/package-json/v/vfurmane/42cal)
+
 # 42cal
 
 An iCal API to see the 42 events in a calendar.
