@@ -26,6 +26,9 @@ Create a *.env* file with the following variables:
 ```
 FT_API_CLIENT_ID=
 FT_API_CLIENT_SECRET=
+
+AUTH_BASIC_USERNAME=
+AUTH_BASIC_PASSWORD=
 ```
 
 ### Run with Docker
