@@ -14,12 +14,12 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { SIMPLE_CLIENT_CREDENTIALS_PROVIDER } from '../simple-client-credentials/simple-client-credentials.module.js';
 import { ClientCredentials } from 'simple-oauth2';
-import { setPageInRoute, setPageNumberInRoute } from '../common/utils/set-page-in-route.js';
-import { getDataAndNextLinkFromResponseOrThrow } from '../common/utils/get-data-and-next-link-from-response-or-throw.js';
-import { FetchSchemas } from '../common/utils/get-json-data-or-throw.js';
+import { setPageInRoute, setPageNumberInRoute } from '../common/utils/fetch/request/set-page-in-route.js';
+import { getDataAndNextLinkFromResponseOrThrow } from '../common/utils/fetch/response/get-data-and-next-link-from-response-or-throw.js';
+import { FetchSchemas } from '../common/utils/fetch/response/get-json-data-or-throw.js';
 import { FtSecondlyRateLimitService } from '../ft-secondly-rate-limit/ft-secondly-rate-limit.service.js';
 import { FtHourlyRateLimitService } from '../ft-hourly-rate-limit/ft-hourly-rate-limit.service.js';
-import { getDataFromResponseOrThrow } from '../common/utils/get-data-from-response-or-throw.js';
+import { getDataFromResponseOrThrow } from '../common/utils/fetch/response/get-data-from-response-or-throw.js';
 
 export type RequestWithSchemas<T> = RequestInit & { schema: FetchSchemas<Array<T>> };
 export type FetchUntilFunctionItems<T> = {

@@ -1,6 +1,6 @@
 import { FetchSchemas, getJsonDataOrThrow } from './get-json-data-or-throw.js';
 import { throwOnErrorResponse } from './throw-on-error-response.js';
-import { FT_API_REGULAR_ERROR_MESSAGE } from '../constants/errors/ft-api.js';
+import { FT_API_REGULAR_ERROR_MESSAGE } from '../../../constants/errors/ft-api.js';
 import { getNextLinkFromHeaders } from './get-next-link-from-headers.js';
 
 export async function getDataAndNextLinkFromResponseOrThrow<T>(
