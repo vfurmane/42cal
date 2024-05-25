@@ -19,6 +19,16 @@ GET /events?campusIds=1,37&cursusIds=9,21
 
 You can find more information on the [Swagger UI page](https://42cal.valfur.fr/swagger).
 
+### Authentication
+
+To prevent 42 API's data leak, the routes are protected using HTTP Basic authentication.
+It can be used with the HTTP `Authorization` header, or with the `basic` query param
+(this is because most iCalendar clients do not allow passing username and password).
+
+```http request
+GET /events?basic=dXNlcjpwYXNz
+```
+
 ## Installation
 
 ### Configuration
