@@ -1,7 +1,7 @@
 # compiled output
-/dist
-/node_modules
-/build
+dist/
+node_modules/
+build/
 
 # Logs
 logs
@@ -36,11 +36,14 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # dotenv environment variable files
-.env
+apps/api/.env
 .env.development.local
 .env.test.local
 .env.production.local
 .env.local
+
+# Turbo
+.turbo
 
 # temp directory
 .temp

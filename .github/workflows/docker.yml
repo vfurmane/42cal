@@ -12,7 +12,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  docker:
+  api:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,20 +35,30 @@ jobs:
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASS }}
       -
-        name: Docker meta
-        id: meta
+        name: Docker meta (Git tag semver)
+        id: meta_semver
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+          flavor: |
+            prefix=api-
+      -
+        name: Docker meta (Git branch ref)
+        id: meta_ref
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=semver,pattern={{version}}
       -
         name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./apps/api/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta_semver.outputs.tags || steps.meta_ref.outputs.tags }}
+          labels: ${{ steps.meta_semver.outputs.labels || steps.meta_ref.outputs.labels }}
