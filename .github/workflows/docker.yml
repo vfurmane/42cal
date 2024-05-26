@@ -9,7 +9,7 @@ env:
   REGISTRY: ghcr.io
   REGISTRY_USER: ${{ github.actor }}
   REGISTRY_PASS: ${{ secrets.GITHUB_TOKEN }}
-  IMAGE_NAME: ${{ github.repository }}
+  API_IMAGE_NAME: ${{ github.repository }}-api
 
 jobs:
   api:
@@ -39,7 +39,7 @@ jobs:
         id: meta_semver
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
           tags: |
             type=semver,pattern={{version}}
           flavor: |
@@ -49,7 +49,7 @@ jobs:
         id: meta_ref
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
           tags: |
             type=ref,event=branch
       -
