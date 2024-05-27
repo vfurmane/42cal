@@ -1,4 +1,4 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/vfurmane/42cal)
+![GitHub Tag](https://img.shields.io/github/v/tag/vfurmane/42cal)
 
 # 42cal
 
