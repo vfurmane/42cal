@@ -35,23 +35,16 @@ jobs:
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASS }}
       -
-        name: Docker meta (Git tag semver)
-        id: meta_semver
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
-          tags: |
-            type=semver,pattern={{version}}
-          flavor: |
-            prefix=api-
-      -
-        name: Docker meta (Git branch ref)
-        id: meta_ref
+        name: Docker meta
+        id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
           tags: |
             type=ref,event=branch
+            type=semver,pattern=api-{{version}}
+          flavor: |
+            prefix=api-
       -
         name: Build and push
         uses: docker/build-push-action@v5
@@ -60,5 +53,5 @@ jobs:
           file: ./apps/api/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.meta_semver.outputs.tags || steps.meta_ref.outputs.tags }}
-          labels: ${{ steps.meta_semver.outputs.labels || steps.meta_ref.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
