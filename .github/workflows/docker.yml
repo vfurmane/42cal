@@ -3,7 +3,7 @@ name: Build and Push Docker image to registry
 on:
   push:
     branches: ["master"]
-    tags: ["api-v*"]
+    tags: ["v*"]
 
 env:
   REGISTRY: ghcr.io
@@ -42,9 +42,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=semver,pattern=api-{{version}}
-          flavor: |
-            prefix=api-
+            type=semver,pattern={{version}}
       -
         name: Build and push
         uses: docker/build-push-action@v5
