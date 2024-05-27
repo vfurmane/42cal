@@ -42,7 +42,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=semver,pattern=api-{{version}}
+            type=semver,pattern={{version}}
           flavor: |
             prefix=api-
       -
