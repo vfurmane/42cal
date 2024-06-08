@@ -1,1 +1,1 @@
-export const RNCP_EVENT_KINDS = ['conference'];
+export const NON_RNCP_EVENT_KINDS = ['extern', 'association'];
