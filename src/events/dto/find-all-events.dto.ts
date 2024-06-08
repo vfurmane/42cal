@@ -1,23 +1,10 @@
 import { IsArray, IsNumber, IsOptional, IsBoolean } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  SWAGGER_EVENTS_FIND_ALL_DTO_BASIC_DESCRIPTION,
-  SWAGGER_EVENTS_FIND_ALL_DTO_BASIC_EXAMPLE,
-  SWAGGER_EVENTS_FIND_ALL_DTO_CAMPUS_IDS_DESCRIPTION,
-  SWAGGER_EVENTS_FIND_ALL_DTO_CAMPUS_IDS_EXAMPLE,
-  SWAGGER_EVENTS_FIND_ALL_DTO_CURSUS_IDS_DESCRIPTION,
-  SWAGGER_EVENTS_FIND_ALL_DTO_CURSUS_IDS_EXAMPLE,
-  SWAGGER_EVENTS_FIND_ALL_DTO_RNCP_DESCRIPTION,
-} from '../../common/constants/swagger/events.js';
+import { SWAGGER_EVENTS_ROUTE } from '../../common/constants/swagger/events.js';
 
 export class FindAllEventsDto {
-  @ApiProperty({
-    description: SWAGGER_EVENTS_FIND_ALL_DTO_CAMPUS_IDS_DESCRIPTION,
-    type: [Number],
-    example: SWAGGER_EVENTS_FIND_ALL_DTO_CAMPUS_IDS_EXAMPLE,
-    required: false,
-  })
+  @ApiProperty(SWAGGER_EVENTS_ROUTE.query.campusIds)
   @IsOptional()
   @Type(() => String)
   @IsArray()
@@ -25,12 +12,7 @@ export class FindAllEventsDto {
   @Transform(({ value }: { value: string }) => value.split(',').map((v) => parseInt(v)))
   campusIds?: Array<number>;
 
-  @ApiProperty({
-    description: SWAGGER_EVENTS_FIND_ALL_DTO_CURSUS_IDS_DESCRIPTION,
-    type: [Number],
-    example: SWAGGER_EVENTS_FIND_ALL_DTO_CURSUS_IDS_EXAMPLE,
-    required: false,
-  })
+  @ApiProperty(SWAGGER_EVENTS_ROUTE.query.cursusIds)
   @IsOptional()
   @Type(() => String)
   @IsArray()
@@ -38,11 +20,7 @@ export class FindAllEventsDto {
   @Transform(({ value }: { value: string }) => value.split(',').map((v) => parseInt(v)))
   cursusIds?: Array<number>;
 
-  @ApiProperty({
-    description: SWAGGER_EVENTS_FIND_ALL_DTO_RNCP_DESCRIPTION,
-    type: Boolean,
-    required: false,
-  })
+  @ApiProperty(SWAGGER_EVENTS_ROUTE.query.rncp)
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }: { value: string }) => {
@@ -50,11 +28,6 @@ export class FindAllEventsDto {
   })
   rncp?: boolean;
 
-  @ApiProperty({
-    description: SWAGGER_EVENTS_FIND_ALL_DTO_BASIC_DESCRIPTION,
-    type: String,
-    example: SWAGGER_EVENTS_FIND_ALL_DTO_BASIC_EXAMPLE,
-    required: false,
-  })
+  @ApiProperty(SWAGGER_EVENTS_ROUTE.query.basic)
   basic?: never;
 }
