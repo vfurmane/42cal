@@ -14,6 +14,7 @@ import { FindAllEventsDto } from './dto/find-all-events.dto.js';
 import { FindEventsResponseDto } from '../ft-api/dto/find-events-response.dto.js';
 import { byCampusIds } from '../common/utils/filter-events/by-campus-ids.js';
 import { byCursusIds } from '../common/utils/filter-events/by-cursus-ids.js';
+import { byRncp } from '../common/utils/filter-events/by-rncp.js';
 
 @Injectable()
 export class EventsService {
@@ -49,10 +50,10 @@ export class EventsService {
     await this.setCache(events);
   }
 
-  async findAll({ campusIds, cursusIds }: FindAllEventsDto) {
+  async findAll({ campusIds, cursusIds, rncp }: FindAllEventsDto) {
     return EventsService.pipeFilters(
       (await this.cacheManager.get<FindEventsResponseDto>(FT_CACHED_EVENTS_CACHE_KEY)) ?? FT_DEFAULT_EVENTS_LIST,
-      [byCampusIds(campusIds), byCursusIds(cursusIds)],
+      [byRncp(rncp), byCampusIds(campusIds), byCursusIds(cursusIds)],
     );
   }
 

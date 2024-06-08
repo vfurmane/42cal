@@ -8,6 +8,7 @@ export const findEventsResponseSchema = z.array(
     cursus_ids: z.array(z.number()),
     description: z.string(),
     location: z.string(),
+    kind: z.string(),
     begin_at: z.string(),
     end_at: z.string(),
   }),

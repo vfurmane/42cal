@@ -1,4 +1,4 @@
-import { IsArray, IsNumber, IsOptional } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsBoolean } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import {
@@ -8,6 +8,7 @@ import {
   SWAGGER_EVENTS_FIND_ALL_DTO_CAMPUS_IDS_EXAMPLE,
   SWAGGER_EVENTS_FIND_ALL_DTO_CURSUS_IDS_DESCRIPTION,
   SWAGGER_EVENTS_FIND_ALL_DTO_CURSUS_IDS_EXAMPLE,
+  SWAGGER_EVENTS_FIND_ALL_DTO_RNCP_DESCRIPTION,
 } from '../../common/constants/swagger/events.js';
 
 export class FindAllEventsDto {
@@ -36,6 +37,18 @@ export class FindAllEventsDto {
   @IsNumber({}, { each: true })
   @Transform(({ value }: { value: string }) => value.split(',').map((v) => parseInt(v)))
   cursusIds?: Array<number>;
+
+  @ApiProperty({
+    description: SWAGGER_EVENTS_FIND_ALL_DTO_RNCP_DESCRIPTION,
+    type: Boolean,
+    required: false,
+  })
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }: { value: string }) => {
+    return value === 'true' || value === '1' ? true : value === 'false' || value === '0' ? false : undefined;
+  })
+  rncp?: boolean;
 
   @ApiProperty({
     description: SWAGGER_EVENTS_FIND_ALL_DTO_BASIC_DESCRIPTION,
