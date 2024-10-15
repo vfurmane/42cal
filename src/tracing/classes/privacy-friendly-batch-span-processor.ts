@@ -1,7 +1,7 @@
 import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
 
 export class PrivacyFriendlyBatchSpanProcessor extends BatchSpanProcessor {
-  private readonly filteredOutKeys = ['net.host.ip', 'net.peer.ip'];
+  private readonly filteredOutKeys = ['net.host.ip', 'net.peer.ip', 'http.client_ip'];
 
   anonymizeIpAddress(ip: string) {
     const lastPointIndex = ip.lastIndexOf('.');
