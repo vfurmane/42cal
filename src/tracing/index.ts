@@ -11,14 +11,18 @@ import * as process from 'node:process';
 const config = {
   serviceName: '42cal-api',
   collectorHost: process.env['TRACING_JAEGER_HTTP_COLLECTOR_HOST'],
+  collectorBasicAuth: process.env['TRACING_JAEGER_HTTP_COLLECTOR_BASIC_AUTH'],
 };
 
 if (config.collectorHost === undefined) {
   throw new Error('unset `TRACING_JAEGER_HTTP_COLLECTOR_HOST` env variable');
 }
 
-const jaegerCollectorOptions = {
+const jaegerCollectorOptions: ConstructorParameters<typeof OTLPTraceExporter>[0] = {
   url: `https://${config.collectorHost}/v1/traces`,
+  headers: {
+    'Proxy-Authorization': `Basic ${config.collectorBasicAuth}`,
+  },
 };
 const jaegerExporter = new OTLPTraceExporter(jaegerCollectorOptions);
 export const otelSDK = new NodeSDK({
