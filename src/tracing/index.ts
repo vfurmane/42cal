@@ -17,6 +17,9 @@ const config = {
 if (config.collectorHost === undefined) {
   throw new Error('unset `TRACING_JAEGER_HTTP_COLLECTOR_HOST` env variable');
 }
+if (config.collectorBasicAuth === undefined) {
+  throw new Error('unset `TRACING_JAEGER_HTTP_COLLECTOR_BASIC_AUTH` env variable');
+}
 
 const jaegerCollectorOptions: ConstructorParameters<typeof OTLPTraceExporter>[0] = {
   url: `https://${config.collectorHost}/v1/traces`,
